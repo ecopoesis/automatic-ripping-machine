@@ -205,6 +205,9 @@ def main(logfile, disc):
             handbrake.handbrake_mkv(hbinpath, hboutpath, logfile, disc)
         elif disc.disctype == "dvd":
             dvdrip.dvdrip(logfile, disc)
+            # remove the path we don't use
+            shutil.rmtree(hboutpath)
+            sys.exit()
         elif disc.videotype == "movie" and cfg['MAINFEATURE']:
             handbrake.handbrake_mainfeature(hbinpath, hboutpath, logfile, disc)
             disc.eject()

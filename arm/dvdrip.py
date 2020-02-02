@@ -70,7 +70,7 @@ def dvdrip(logfile, disc):
         dvdbackup = subprocess.run(
             cmd,
             shell=True
-        ).decode("utf-8")
+        )
         logging.debug("The exit code for dvdbackup is: " + str(dvdbackup.returncode))
     except subprocess.CalledProcessError as mdisc_error:
         err = "Call to dvdbackup failed with code: " + str(dvdbackup.returncode) + "(" + str(dvdbackup.output) + ")"

@@ -6,6 +6,7 @@ import logging
 import subprocess
 import time
 import shlex
+import shutil
 
 from config import cfg
 
@@ -77,6 +78,7 @@ def dvdrip(logfile, disc):
         logging.error(err)
         return
 
+    logging.info("Converting to ISO")
     isocmd = 'mkisofs -dvd-video -udf -o "{0}"/"{1} - DVDRip 480p.iso" "{2}"/"{3}"'.format(
                 moviepath,
                 disc.videotitle,

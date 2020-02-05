@@ -24,41 +24,30 @@ def dvdrip(logfile, disc):
 
     # get filesystem in order
     rawpath = os.path.join(cfg['RAWPATH'], disc.videotitle)
-    logging.info("Raw path is " + rawpath)
-    moviepath = os.path.join(cfg['MEDIA_DIR'], disc.videotitle)
-
-    if not os.path.exists(rawpath):
-        try:
-            os.makedirs(rawpath)
-        except OSError:
-            err = "Couldn't create the raw path: " + rawpath + " Probably a permissions error"
-    else:
-        logging.info(rawpath + " exists.  Adding timestamp.")
+    if os.path.exists(rawpath):
+        logging.info(rawpath + " exists. Adding timestamp.")
         ts = round(time.time() * 100)
         rawpath = os.path.join(cfg['RAWPATH'], disc.videotitle + "_" + str(ts))
+
+    try:
+        os.makedirs(rawpath)
         logging.info("rawpath is " + rawpath)
-        try:
-            os.makedirs(rawpath)
-        except OSError:
-            err = "Couldn't create the raw path: " + rawpath + " Probably a permissions error"
-            sys.exit(err)
+    except OSError:
+        err = "Couldn't create the raw path: " + rawpath + " Probably a permissions error"
+        sys.exit(err)
 
-    if not os.path.exists(moviepath):
-        try:
-            os.makedirs(moviepath)
-        except OSError:
-            err = "Couldn't create the movie path: " + rawpath + " Probably a permissions error"
-    else:
-        logging.info(moviepath + " exists.  Adding timestamp.")
+    moviepath = os.path.join(cfg['MEDIA_DIR'], disc.videotitle)
+    if os.path.exists(moviepath):
+        logging.info(moviepath + " exists. Adding timestamp.")
         ts = round(time.time() * 100)
-        rawpath = os.path.join(cfg['RAWPATH'], disc.videotitle + "_" + str(ts))
-        logging.info("rawpath is " + moviepath)
-        try:
-            os.makedirs(rawpath)
-        except OSError:
-            err = "Couldn't create the movie path: " + moviepath + " Probably a permissions error"
-            sys.exit(err)
+        moviepath = os.path.join(cfg['MEDIA_DIR'], disc.videotitle + "_" + str(ts))
 
+    try:
+        os.makedirs(moviepath)
+        logging.info("moviepath is " + moviepath)
+    except OSError:
+        err = "Couldn't create the movie path: " + moviepath + " Probably a permissions error"
+        sys.exit(err)
 
     logging.debug("Ripping with dvdbackup...")
     cmd = 'dvdbackup -i {0} -o "{1}" -M -n "{2}"'.format(
